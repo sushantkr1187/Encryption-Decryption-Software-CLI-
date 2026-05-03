@@ -1,16 +1,23 @@
-import time
-import os
-import platform
+import sys
+
+try:
+    import time
+    import os
+    import platform
+except ImportError:
+    print("One or more required modules are not available.\nPlease ensure you have the following modules installed: time, os, platform.")
+    print("Kindly install them using: pip install <module_name>")
+    sys.exit(1)
 
 app_name = "EncryptionSoftware"
 
 if platform.system() == "Windows":
     base = os.environ["APPDATA"]
 
-elif platform.system() == "Darwin":  # macOS
+elif platform.system() == "Darwin":
     base = os.path.expanduser("~/Library/Application Support")
 
-else:  # Linux and others
+else:
     base = os.path.expanduser("~/.local/share")
 
 app_folder = os.path.join(base, app_name)
@@ -113,13 +120,18 @@ def intro():
         insert()
         intro()'''
 def read():
-    print("READING MODE ON...")
-    hline()
-    fp=open(file,'r')
-    a=(fp.read())
-    b=decrypt(a)
-    print(b)
-    fp.close()
+    try:
+        print("READING MODE ON...")
+        hline()
+        fp=open(file,'r')
+        a=(fp.read())
+        b=decrypt(a)
+        print(b)
+        fp.close()
+    except FileNotFoundError:
+        print("No encrypted text found. Please insert some text first.")
+        hline()
+        intro()
 def insert():
     fp=open(file,'w')
     hline()
