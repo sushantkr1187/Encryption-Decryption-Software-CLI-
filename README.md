@@ -85,6 +85,9 @@ Encryption.py
 - Demonstrating CLI application design
 - Educational and personal use
 
+## Latest Release
+v1.0.1 – Improved error handling and CLI stability
+
 ## Disclaimer
 
 This software uses a simple encryption technique and should not be used for protecting highly sensitive or confidential information.
