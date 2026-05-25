@@ -87,6 +87,7 @@ Encryption.py
 
 ## Latest Release
 v1.0.1 – Improved error handling and CLI stability
+v1.0.2 – Improved code readability by adding comments in the program wherever required
 
 ## Disclaimer
 
