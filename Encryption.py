@@ -1,53 +1,53 @@
 import sys
 
-try:
+try: # importing required modules
     import time
     import os
     import platform
-except ImportError:
+except ImportError: # in case one or more modules weren't found this will handle the issue
     print("One or more required modules are not available.\nPlease ensure you have the following modules installed: time, os, platform.")
     print("Kindly install them using: pip install <module_name>")
-    sys.exit(1)
+    # sys.exit(1)
 
 app_name = "EncryptionSoftware"
 
-if platform.system() == "Windows":
+if platform.system() == "Windows": # Windows
     base = os.environ["APPDATA"]
 
-elif platform.system() == "Darwin":
+elif platform.system() == "Darwin": # macOS
     base = os.path.expanduser("~/Library/Application Support")
 
-else:
+else: # Linux and other Unix-like systems
     base = os.path.expanduser("~/.local/share")
 
-app_folder = os.path.join(base, app_name)
-os.makedirs(app_folder, exist_ok=True)
+app_folder = os.path.join(base, app_name) # Define the application folder path
+os.makedirs(app_folder, exist_ok=True) # Create the application folder if it doesn't exist
 
-file = os.path.join(app_folder, "Encryption.txt")
+file = os.path.join(app_folder, "Encryption.txt") # Define the file path for storing encrypted text
 
-def hline():
+def hline(): # Recurring Horizontal line output used frequently in this code for better user experience and readability 
     print("-~"*51,"-",sep='')
 def intro():
     # print('Please choose between the following tasks:\n\t1. Read your pre-existing encrypted text. \n\t2. Enter the text to be encrypted(retain all previous text and add to the end)\n\t3. Enter the text to be encrypted(truncate all previous text and start from stratch)\n\t4. Delete previous encrypted text.')
-    print('Please choose between the following tasks:\n\t1. Read your pre-existing encrypted text. \n\t2. Enter the text to be encrypted(retain all previous text and add to the end)\n\t3. Delete all the previous encrypted text.\n\t*  UM – USER MANNUAL')
+    print('Please choose between the following tasks:\n\t1. Read your pre-existing encrypted text. \n\t2. Enter the text to be encrypted(retain all previous text and add to the end)\n\t3. Delete all the previous encrypted text.\n\t*  UM – USER MANNUAL') # Created menu-driven interface for better user experience and ease of use. Also added a special command to view the user manual for the software.
     hline()
-    print("To quit the Program write 'q' in place of 1-3\nTo view Usser Mannual write 'UM' in place of 1-3")
+    print("To quit the Program write 'q' in place of 1-3\nTo view User Manual write 'UM' in place of 1-3")
     task=(input('Please enter the desired number (1-3) denoting the taks to be performed\nAccording to the number used for the given task: '))
-    if task=='1':
+    if task=='1': # Reading mode
         read()
         intro()
         hline()
-    elif task=='2':
+    elif task=='2': # Insertion mode (append)
         append()
         intro()
-    elif task=='3':
+    elif task=='3': # Deletion mode
         delete()
         print('Congratulations!!!\nThe Text previously stored in the File has been successfully deleted.')
         hline()
         intro()
         hline()
-    elif task=='q':
-        print("Program will terminate automatically in:")
+    elif task=='q': # Quit command
+        print("Program will terminate automatically in:") # Quitting after a countdown for better user experience and to avoid abrupt termination of the program which can cause inconvenience to the user.
         for i in range(5, 0, -1):
             print(f"{i} seconds remaining...")
             time.sleep(1)
@@ -55,7 +55,7 @@ def intro():
         print("Exiting now. Thank you for using the software! 👋")
         exit()
         # exit()
-    elif task.lower()=='um':
+    elif task.lower()=='um': # User Manual command
         print("""
 -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
                     ENCRYPTION – DECRYPTION SOFTWARE
@@ -113,13 +113,13 @@ def intro():
 -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
 """)
         intro()
-    else:
+    else: # Handle any other anomalies
         print('Sorry for the inconvinience caused, Try Again!\nPlease! Only Choose between the numbers 1,2,3,4')
         intro()
     '''elif task=='3':
         insert()
         intro()'''
-def read():
+def read(): # READING MODE
     try:
         print("READING MODE ON...")
         hline()
@@ -128,11 +128,11 @@ def read():
         b=decrypt(a)
         print(b)
         fp.close()
-    except FileNotFoundError:
+    except FileNotFoundError: # This will handle the error in case file don't exist
         print("No encrypted text found. Please insert some text first.")
         hline()
         intro()
-def insert():
+def insert(): # Insertion mode (truncate) – Discarded in main version
     fp=open(file,'w')
     hline()
     print("INSERTION MODE ON...")
@@ -151,7 +151,7 @@ def insert():
         ln.append(a)
     fp.writelines(ln)
     fp.close()
-def append():
+def append(): # Insertion mode (append)
     fp=open(file,'a')
     hline()
     print("INSERTION MODE ON...")
@@ -170,10 +170,10 @@ def append():
         ln.append(a)
     fp.writelines(ln)
     fp.close()
-def delete():
+def delete(): # Deletion mode (opening file in write mode itself deletes the previous data and creates a new empty file)
     fp=open(file,'w')
     fp.close()
-def encrypt(text, key=89):
+def encrypt(text, key=89): # Encryption function using a simple Caesar cipher with a shift of 89 (which is equivalent to a shift of 1 in the printable ASCII range)
     encrypted = ""
     for char in text:
         if 32 <= ord(char) <= 126:
@@ -187,11 +187,11 @@ def encrypt(text, key=89):
             encrypted += char
     return encrypted
 
-def decrypt(encrypted_text, key=89):
+def decrypt(encrypted_text, key=89): # Decryption function using the same Caesar cipher with a shift of -89 (which is equivalent to a shift of -1 in the printable ASCII range)
     return encrypt(encrypted_text, -key)
 
 
-
+# Introductory lines to welcome the user and provide information about the creator and creation date of the software for better user experience and to establish credibility. Also added a horizontal line for better readability and aesthetics.
 print("-~"*15,"Welcome to Encryption-Decryption Software","~-"*15)
 print("About the Creator:\nSushant Kumar Kushwaha, an 18 yo senior secondary student at Sahu Academy, Coding Prodigy, an Enthusiast\nof interpreting, using & creating technology.\nCreation Date:\tJuly 22, 2025")
 hline()
